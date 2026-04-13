@@ -1,49 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIK POTADS - Selamat Datang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .bg-potads-blue { background-color: #003D73; }
-        .text-potads-blue { color: #003D73; }
-        .bg-potads-yellow { background-color: #FFD700; }
-        .text-potads-yellow { color: #FFD700; }
-    </style>
-</head>
-<body class="bg-white text-gray-800">
+@extends('layouts.frontend')
 
-    <!-- Navbar -->
-    <nav class="bg-potads-blue py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <div class="bg-white p-1 rounded">
-                <img src="https://img.freepik.com/free-vector/colorful-hand-drawn-community-logo_23-2148141253.jpg" alt="Logo" class="h-10 w-10 object-contain">
-            </div>
-        </div>
-        
-        <div class="hidden md:flex items-center gap-8 text-white font-medium">
-            <a href="#" class="border-b-2 border-potads-yellow pb-1 text-potads-yellow">Beranda</a>
-            <a href="#" class="hover:text-potads-yellow transition">Tentang Kami</a>
-            <a href="#" class="hover:text-potads-yellow transition">Event</a>
-            <a href="#" class="hover:text-potads-yellow transition">Artikel</a>
-            <div class="flex items-center gap-1 cursor-pointer hover:text-potads-yellow">
-                Materi <i data-lucide="chevron-down" class="w-4 h-4"></i>
-            </div>
-            <a href="#" class="hover:text-potads-yellow transition">Akademis & Medis</a>
-        </div>
+@section('title', 'PIK POTADS - Selamat Datang')
 
-        <div class="flex items-center gap-4">
-            <button class="bg-potads-yellow text-potads-blue px-6 py-2 rounded-lg font-bold hover:bg-yellow-400 transition">Login</button>
-            <div class="text-white cursor-pointer">
-                <i data-lucide="user-circle" class="w-8 h-8"></i>
-            </div>
-        </div>
-    </nav>
-
+@section('content')
     <!-- Hero Section -->
     <section class="px-6 md:px-12 py-8">
         <div class="relative rounded-3xl overflow-hidden bg-gray-900 aspect-[21/9] flex items-center">
@@ -55,9 +14,9 @@
                 <p class="text-lg md:text-xl mb-8 text-gray-100">
                     Menyediakan sumber daya, komunitas, dan advokasi yang dibutuhkan untuk membantu individu dengan Down Syndrome berkembang di setiap tahap kehidupan.
                 </p>
-                <button class="bg-potads-yellow text-potads-blue px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+                <a href="{{ route('donations.index') }}" class="bg-potads-yellow text-potads-blue px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:scale-105 transition-transform">
                     Donasi Sekarang <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
-                </button>
+                </a>
             </div>
             <!-- Pagination indicator dots -->
             <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
@@ -156,35 +115,28 @@
     <section class="px-6 md:px-12 py-20">
         <div class="flex justify-between items-end mb-12">
             <h2 class="text-3xl font-bold text-potads-blue">Event Saat Ini</h2>
-            <a href="#" class="text-potads-blue font-bold flex items-center gap-2 hover:gap-3 transition-all">
+            <a href="{{ route('events.index') }}" class="text-potads-blue font-bold flex items-center gap-2 hover:gap-3 transition-all">
                 Lihat Semua Event <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Event Card Main -->
-            <div class="md:col-span-2 relative h-[400px] rounded-3xl overflow-hidden group">
-                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" alt="Event" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-potads-blue/90 via-transparent to-transparent p-10 flex flex-col justify-end">
-                    <h3 class="text-3xl font-bold text-white mb-4">Senandung Jiwa Musim Panas: Konser Terbuka</h3>
-                    <div class="flex gap-6 text-white/80 text-sm">
-                        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> 15 Agustus 2024</span>
-                        <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Paviliun Taman Menteng</span>
+            @foreach($events as $event)
+                <div class="relative h-[400px] rounded-3xl overflow-hidden group">
+                    <img src="{{ Str::startsWith($event->image, 'http') ? $event->image : asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-potads-blue/90 via-transparent to-transparent p-10 flex flex-col justify-end">
+                        <h3 class="text-2xl font-bold text-white mb-4">{{ $event->title }}</h3>
+                        <div class="flex gap-6 text-white/80 text-sm">
+                            <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</span>
+                            <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> {{ $event->location }}</span>
+                        </div>
                     </div>
+                    <a href="{{ route('events.show', $event) }}" class="absolute bottom-10 right-10">
+                        <div class="bg-white/20 p-3 rounded-full backdrop-blur-sm group-hover:bg-potads-yellow group-hover:text-potads-blue text-white transition">
+                            <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+                        </div>
+                    </a>
                 </div>
-                <div class="absolute bottom-10 right-10">
-                    <div class="bg-white/20 p-3 rounded-full backdrop-blur-sm group-hover:bg-potads-yellow group-hover:text-potads-blue text-white transition">
-                        <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- Side Event Card -->
-            <div class="relative h-[400px] rounded-3xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1932&auto=format&fit=crop" alt="Event" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-potads-blue/40 p-8 flex flex-col justify-end">
-                    <h3 class="text-xl font-bold text-white mb-2">Cerita, Cinta, dan Harapan</h3>
-                    <p class="text-white/80 text-xs mb-4">Taman Menteng</p>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -208,62 +160,29 @@
     <section class="px-6 md:px-12 py-20">
         <div class="flex justify-between items-end mb-12">
             <h2 class="text-4xl font-bold text-potads-blue leading-tight">Artikel Terkini</h2>
-            <a href="#" class="text-potads-blue font-bold flex items-center gap-2 hover:gap-3 transition-all">
+            <a href="{{ route('articles.index') }}" class="text-potads-blue font-bold flex items-center gap-2 hover:gap-3 transition-all">
                 Lihat Semua Artikel <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Article 1 -->
-            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
-                <div class="overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1536640712247-c45474d66827?q=80&w=2070&auto=format&fit=crop" alt="Article" class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
-                </div>
-                <div class="p-8 text-center">
-                    <h3 class="text-xl font-bold text-potads-blue mb-4">Menemukan Ketenangan: Mindful Parenting 101</h3>
-                    <p class="text-gray-400 text-sm mb-8">Teknik praktis untuk menjaga ketenangan diri saat suasana rumah terasa kurang terkendali.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4 text-xs text-blue-400 font-bold">
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> 20 April 2026</span>
-                            <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3"></i> Ica</span>
+            @foreach($articles as $article)
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
+                    <div class="overflow-hidden h-56">
+                        <img src="{{ Str::startsWith($article->image, 'http') ? $article->image : asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-xl font-bold text-potads-blue mb-4 line-clamp-2">{{ $article->title }}</h3>
+                        <p class="text-gray-400 text-sm mb-8 line-clamp-2">{{ Str::limit(strip_tags($article->content), 100) }}</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4 text-xs text-blue-400 font-bold">
+                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> {{ $article->created_at->format('d M Y') }}</span>
+                                <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3"></i> {{ $article->author->name }}</span>
+                            </div>
+                            <a href="{{ route('articles.show', $article->slug) }}" class="bg-blue-50 text-potads-blue font-bold px-4 py-2 rounded-lg text-sm hover:bg-potads-blue hover:text-white transition">Lihat Detail</a>
                         </div>
-                        <button class="bg-blue-50 text-potads-blue font-bold px-4 py-2 rounded-lg text-sm hover:bg-potads-blue hover:text-white transition">Lihat Detail</button>
                     </div>
                 </div>
-            </div>
-            <!-- Article 2 -->
-            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
-                <div class="overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2040&auto=format&fit=crop" alt="Article" class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
-                </div>
-                <div class="p-8 text-center">
-                    <h3 class="text-xl font-bold text-potads-blue mb-4">Integrasi Kerja-Hidup: Perspektif Baru</h3>
-                    <p class="text-gray-400 text-sm mb-8">Teknik praktis untuk menjaga ketenangan diri saat suasana rumah terasa kurang terkendali.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4 text-xs text-blue-400 font-bold">
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> 20 April 2026</span>
-                            <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3"></i> Ica</span>
-                        </div>
-                        <button class="bg-blue-50 text-potads-blue font-bold px-4 py-2 rounded-lg text-sm hover:bg-potads-blue hover:text-white transition">Lihat Detail</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 3 -->
-            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
-                <div class="overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1520206151081-9bf94ee04e5d?q=80&w=2074&auto=format&fit=crop" alt="Article" class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
-                </div>
-                <div class="p-8 text-center">
-                    <h3 class="text-xl font-bold text-potads-blue mb-4">Revolusi Tidur: Istirahat Lebih Baik</h3>
-                    <p class="text-gray-400 text-sm mb-8">Teknik praktis untuk menjaga ketenangan diri saat suasana rumah terasa kurang terkendali.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4 text-xs text-blue-400 font-bold">
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> 20 April 2026</span>
-                            <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3"></i> Ica</span>
-                        </div>
-                        <button class="bg-blue-50 text-potads-blue font-bold px-4 py-2 rounded-lg text-sm hover:bg-potads-blue hover:text-white transition">Lihat Detail</button>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -299,63 +218,10 @@
                 <p class="text-lg md:text-xl text-white/80 mb-12">
                     Donasi Anda secara langsung membiayai terapi intervensi dini dan paket pendidikan untuk keluarga yang membutuhkan. Setiap pemberian membuka pintu baru.
                 </p>
-                <button class="bg-potads-yellow text-potads-blue text-lg font-extrabold px-12 py-5 rounded-2xl hover:scale-105 transition-transform shadow-2xl">
+                <a href="{{ route('donations.index') }}" class="bg-potads-yellow text-potads-blue text-lg font-extrabold px-12 py-5 rounded-2xl hover:scale-105 transition-transform shadow-2xl inline-block">
                     Lakukan Donasi
-                </button>
+                </a>
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="bg-potads-blue text-white pt-20 pb-10 px-6 md:px-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div class="md:col-span-1">
-                <div class="bg-white p-2 rounded inline-block mb-6">
-                    <img src="https://img.freepik.com/free-vector/colorful-hand-drawn-community-logo_23-2148141253.jpg" alt="Logo" class="h-10 w-10">
-                </div>
-                <p class="text-white/70 text-sm leading-relaxed max-w-xs">
-                    Mendukung setiap perjalanan melalui aksi komunitas yang inklusif dan penceritaan digital.
-                </p>
-            </div>
-            
-            <div>
-                <h4 class="text-potads-yellow font-bold uppercase tracking-wider mb-6">Organisasi</h4>
-                <ul class="space-y-4 text-white/70 text-sm">
-                    <li><a href="#" class="hover:text-white">Misi Kami</a></li>
-                    <li><a href="#" class="hover:text-white">Relawan</a></li>
-                    <li><a href="#" class="hover:text-white">Artikel</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-potads-yellow font-bold uppercase tracking-wider mb-6">Legal</h4>
-                <ul class="space-y-4 text-white/70 text-sm">
-                    <li><a href="#" class="hover:text-white">Privasi</a></li>
-                    <li><a href="#" class="hover:text-white">Ketentuan</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-potads-yellow font-bold uppercase tracking-wider mb-6">Hubungkan</h4>
-                <p class="text-white/70 text-sm mb-6">Hubungi Kami</p>
-                <div class="flex gap-4">
-                    <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition"><i data-lucide="globe" class="w-5 h-5"></i></a>
-                    <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition"><i data-lucide="mail" class="w-5 h-5"></i></a>
-                    <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition"><i data-lucide="share-2" class="w-5 h-5"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="border-t border-white/10 pt-8 text-center">
-            <p class="text-white/50 text-xs uppercase tracking-widest font-medium">
-                © 2026 POTADS. Seluruh Hak Cipta Dilindungi Undang-Undang.
-            </p>
-        </div>
-    </footer>
-
-    <script>
-        // Inisialisasi Lucide Icons
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+@endsection
