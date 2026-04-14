@@ -80,19 +80,22 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Nama Lengkap</label>
-                                <input type="text" name="name" placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" value="{{ old('name') }}" required>
+                                <input type="text" name="name" placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('name') border-red-500 @enderror" value="{{ old('name') }}" required>
+                                @error('name') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Email Aktif</label>
-                                <input type="email" name="email" placeholder="nama@email.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" value="{{ old('email') }}" required>
+                                <input type="email" name="email" placeholder="nama@email.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('email') border-red-500 @enderror" value="{{ old('email') }}" required>
+                                @error('email') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">No HP (WhatsApp)</label>
-                                <input type="text" name="phone" placeholder="0812xxxx" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" value="{{ old('phone') }}">
+                                <input type="text" name="phone" placeholder="0812xxxx" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('phone') border-red-500 @enderror" value="{{ old('phone') }}">
+                                @error('phone') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Pekerjaan</label>
-                                <input type="text" name="job" placeholder="Guru, Wirausaha, dll" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" value="{{ old('job') }}">
+                                <input type="text" name="profession" placeholder="Guru, Wirausaha, dll" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('profession') border-red-500 @enderror" value="{{ old('profession') }}">
                             </div>
                         </div>
                     </section>
@@ -103,11 +106,13 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Alamat Lengkap</label>
-                                <textarea name="address" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm resize-none">{{ old('address') }}</textarea>
+                                <textarea name="address" rows="2" placeholder="Nama jalan, nomor rumah, RT/RW" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm resize-none @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>
+                                @error('address') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Kabupaten / Kota</label>
-                                <input type="text" name="city" placeholder="Masukkan nama kota" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" value="{{ old('city') }}">
+                                <input type="text" name="city" placeholder="Masukkan nama kota" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('city') border-red-500 @enderror" value="{{ old('city') }}">
+                                @error('city') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </section>
@@ -125,6 +130,7 @@
                                 Bukan / Pendamping
                             </label>
                         </div>
+                        @error('is_parent') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <!-- Section: Keamanan -->
@@ -133,12 +139,14 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Username</label>
-                                <input type="text" name="username" placeholder="Pilih nama pengguna unik" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" required>
+                                <input type="text" name="username" placeholder="Pilih nama pengguna unik" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('username') border-red-500 @enderror" value="{{ old('username') }}" required>
+                                @error('username') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Kata Sandi</label>
-                                    <input type="password" name="password" placeholder="Min. 8 karakter" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm" required>
+                                    <input type="password" name="password" placeholder="Min. 8 karakter" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm @error('password') border-red-500 @enderror" required>
+                                    @error('password') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">Konfirmasi Kata Sandi</label>

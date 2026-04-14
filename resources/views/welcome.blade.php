@@ -102,12 +102,34 @@
             <p class="text-gray-600">Saksikan bagaimana Bright Horizons membuat perbedaan setiap harinya melalui inisiatif berbasis komunitas kami.</p>
         </div>
         <div class="max-w-5xl mx-auto relative group cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070&auto=format&fit=crop" alt="Thumbnail Video" class="w-full aspect-video object-cover rounded-[2.5rem] shadow-xl">
-            <div class="absolute inset-0 bg-black/20 rounded-[2.5rem] flex items-center justify-center group-hover:bg-black/30 transition">
-                <div class="w-20 h-20 bg-potads-yellow rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                    <i data-lucide="play" class="w-10 h-10 text-potads-blue fill-current"></i>
+            @if($latestVideo)
+                @php
+                    $videoId = '';
+                    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i', $latestVideo->url, $matches)) {
+                        $videoId = $matches[1];
+                    }
+                @endphp
+                @if($videoId)
+                    <img src="https://img.youtube.com/vi/{{ $videoId }}/maxresdefault.jpg" alt="{{ $latestVideo->title }}" class="w-full aspect-video object-cover rounded-[2.5rem] shadow-xl">
+                @else
+                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070&auto=format&fit=crop" alt="Thumbnail Video" class="w-full aspect-video object-cover rounded-[2.5rem] shadow-xl">
+                @endif
+                <a href="{{ $latestVideo->url }}" target="_blank" class="absolute inset-0 bg-black/20 rounded-[2.5rem] flex items-center justify-center group-hover:bg-black/30 transition">
+                    <div class="w-20 h-20 bg-potads-yellow rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                        <i data-lucide="play" class="w-10 h-10 text-potads-blue fill-current"></i>
+                    </div>
+                    <div class="absolute bottom-6 left-6 right-6 text-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                        <h4 class="font-bold text-lg">{{ $latestVideo->title }}</h4>
+                    </div>
+                </a>
+            @else
+                <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070&auto=format&fit=crop" alt="Thumbnail Video" class="w-full aspect-video object-cover rounded-[2.5rem] shadow-xl">
+                <div class="absolute inset-0 bg-black/20 rounded-[2.5rem] flex items-center justify-center group-hover:bg-black/30 transition">
+                    <div class="w-20 h-20 bg-potads-yellow rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                        <i data-lucide="play" class="w-10 h-10 text-potads-blue fill-current"></i>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
 

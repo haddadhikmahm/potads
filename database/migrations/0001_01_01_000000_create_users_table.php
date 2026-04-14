@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('profession')->nullable();
             $table->string('city')->nullable();
             $table->text('address')->nullable();
+            $table->boolean('is_parent')->default(false);
             $table->string('role')->default('user'); // user, admin
             $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();

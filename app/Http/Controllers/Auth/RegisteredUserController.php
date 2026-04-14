@@ -38,6 +38,7 @@ class RegisteredUserController extends Controller
             'profession' => ['nullable', 'string', 'max:255'],
             'city' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string'],
+            'is_parent' => ['required', 'boolean'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -49,6 +50,7 @@ class RegisteredUserController extends Controller
             'profession' => $request->profession,
             'city' => $request->city,
             'address' => $request->address,
+            'is_parent' => $request->is_parent,
             'password' => Hash::make($request->password),
         ]);
 

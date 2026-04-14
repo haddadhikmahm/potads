@@ -1,74 +1,93 @@
 @extends('layouts.admin')
 
-@section('header', 'Manajemen Event')
+@section('title', 'Daftar Event')
+
+@section('header_title', 'Daftar Event Yayasan')
+@section('header_breadcrumb', 'MANAGEMENT PORTAL')
 
 @section('content')
-<div class="mb-6 flex justify-between items-center">
-    <h3 class="text-lg font-bold text-gray-800 tracking-tight">Daftar Semua Event</h3>
-    <a href="{{ route('admin.events.create') }}" class="bg-potads-blue text-white px-6 py-2.5 rounded-xl font-bold hover:bg-potads-blue-dark transition shadow-lg flex items-center gap-2">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+<div class="mb-10 flex justify-end">
+    <a href="{{ route('admin.events.create') }}" class="bg-potads-yellow text-potads-blue px-8 py-4 rounded-full font-bold hover:bg-white transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-2 transform hover:-translate-y-1">
+        <i data-lucide="plus-circle" class="w-5 h-5"></i>
         Tambah Event
     </a>
 </div>
 
-@if(session('success'))
-    <div class="bg-green-100 border border-green-200 text-green-700 px-6 py-4 rounded-xl mb-6 shadow-sm">
-        {{ session('success') }}
-    </div>
-@endif
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-50 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-left">
-            <thead class="bg-gray-50 border-b border-gray-100">
-                <tr class="text-gray-400 text-xs uppercase tracking-widest">
-                    <th class="px-6 py-4 font-semibold">Gambar</th>
-                    <th class="px-6 py-4 font-semibold">Judul Event</th>
-                    <th class="px-6 py-4 font-semibold">Tanggal</th>
-                    <th class="px-6 py-4 font-semibold">Lokasi</th>
-                    <th class="px-6 py-4 font-semibold">Status</th>
-                    <th class="px-6 py-4 font-semibold">Aksi</th>
+            <thead>
+                <tr class="text-slate-400 text-[10px] uppercase tracking-[0.2em] border-b border-slate-50 bg-slate-50/30">
+                    <th class="px-8 py-5 font-bold">No</th>
+                    <th class="px-8 py-5 font-bold">Judul Event</th>
+                    <th class="px-8 py-5 font-bold">Tanggal</th>
+                    <th class="px-8 py-5 font-bold">Status</th>
+                    <th class="px-8 py-5 font-bold text-right">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="text-sm divide-y divide-gray-50">
-                @forelse($events as $event)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4">
-                        @if($event->image)
-                            <img src="{{ asset('storage/' . $event->image) }}" class="w-16 h-10 object-cover rounded-lg shadow-sm">
-                        @else
-                            <div class="w-16 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-xs">No Image</div>
-                        @endif
+            <tbody class="text-sm divide-y divide-slate-50">
+                @forelse($events as $index => $event)
+                <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="px-8 py-6 text-slate-400 font-medium">
+                        {{ str_pad($index + 1 + ($events->currentPage() - 1) * $events->perPage(), 2, '0', STR_PAD_LEFT) }}
                     </td>
-                    <td class="px-6 py-4 font-bold text-gray-700">{{ $event->title }}</td>
-                    <td class="px-6 py-4 text-gray-600">{{ \Carbon\Carbon::parse($event->event_date)->format('d M Y, H:i') }}</td>
-                    <td class="px-6 py-4 text-gray-500">{{ $event->location }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0">
+                                @if($event->image)
+                                    <img src="{{ asset('storage/' . $event->image) }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-slate-300">
+                                        <i data-lucide="image" class="w-5 h-5"></i>
+                                    </div>
+                                @endif
+                            </div>
+                            <span class="font-bold text-slate-700">{{ $event->title }}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-slate-500 font-medium">
+                        {{ \Carbon\Carbon::parse($event->event_date)->format('d M Y') }}
+                    </td>
+                    <td class="px-8 py-6">
                         @php
-                            $statusColors = [
-                                'upcoming' => 'bg-blue-100 text-blue-700',
-                                'ongoing' => 'bg-yellow-100 text-yellow-700',
-                                'completed' => 'bg-green-100 text-green-700',
+                            $statusMap = [
+                                'upcoming' => ['label' => 'MENDATANG', 'class' => 'bg-blue-50 text-blue-600'],
+                                'ongoing' => ['label' => 'AKTIF', 'class' => 'bg-potads-yellow/20 text-orange-600'],
+                                'completed' => ['label' => 'SELESAI', 'class' => 'bg-slate-100 text-slate-500'],
+                                'draft' => ['label' => 'DRAFT', 'class' => 'bg-slate-50 text-slate-400'],
                             ];
+                            $stat = $statusMap[$event->status] ?? $statusMap['draft'];
                         @endphp
-                        <span class="px-3 py-1 rounded-full text-xs font-bold {{ $statusColors[$event->status] ?? 'bg-gray-100 text-gray-700' }}">
-                            {{ ucfirst($event->status) }}
+                        <span class="px-4 py-1.5 rounded-full text-[9px] font-extrabold tracking-widest {{ $stat['class'] }}">
+                            {{ $stat['label'] }}
                         </span>
                     </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <a href="{{ route('admin.events.edit', $event) }}" class="text-potads-blue hover:text-potads-blue-dark font-bold transition">Edit</a>
-                            <form action="{{ route('admin.events.destroy', $event) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus event ini?')">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('admin.events.edit', $event) }}" class="p-2.5 bg-white rounded-xl text-slate-400 hover:text-potads-blue hover:shadow-md transition-all border border-slate-100">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </a>
+                            <form action="{{ route('admin.events.destroy', $event) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 font-bold transition">Hapus</button>
+                                <button type="submit" class="p-2.5 bg-white rounded-xl text-slate-400 hover:text-red-500 hover:shadow-md transition-all border border-slate-100 btn-delete-confirm">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
                             </form>
                         </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic">Belum ada event yang ditambahkan.</td>
+                    <td colspan="5" class="px-8 py-20 text-center">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200">
+                                <i data-lucide="calendar-x" class="w-8 h-8"></i>
+                            </div>
+                            <p class="text-slate-400 italic text-sm">Belum ada event yang ditambahkan.</p>
+                        </div>
+                    </td>
                 </tr>
                 @endforelse
             </tbody>
@@ -76,7 +95,7 @@
     </div>
     
     @if($events->hasPages())
-    <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+    <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-50">
         {{ $events->links() }}
     </div>
     @endif

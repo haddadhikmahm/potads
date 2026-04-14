@@ -12,16 +12,19 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::create([
-            'name' => 'Admin POTADS',
-            'email' => 'admin@potadsjabar.or.id',
-            'username' => 'admin_potads',
-            'phone' => '082123899931',
-            'profession' => 'Administrator',
-            'city' => 'Bandung',
-            'address' => 'Bandung, Jawa Barat',
-            'role' => 'admin',
-            'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
-        ]);
+        \App\Models\User::updateOrCreate(
+            ['email' => 'admin@potadsjabar.or.id'],
+            [
+                'name' => 'Admin POTADS',
+                'username' => 'admin_potads',
+                'phone' => '082123899931',
+                'profession' => 'Administrator',
+                'city' => 'Bandung',
+                'address' => 'Bandung, Jawa Barat',
+                'role' => 'admin',
+                'password' => \Illuminate\Support\Facades\Hash::make('admin123'),
+                'is_parent' => false,
+            ]
+        );
     }
 }
