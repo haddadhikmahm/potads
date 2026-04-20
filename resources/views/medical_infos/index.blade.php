@@ -1,64 +1,115 @@
 @extends('layouts.frontend')
 
-@section('title', 'Info Akademis & Medis - PIK POTADS')
+@section('title', 'PIK POTADS - Akademis & Medis')
 
 @section('content')
-<!-- Hero Section -->
-<section class="bg-potads-blue py-20 px-6 md:px-12 text-center text-white relative overflow-hidden">
-    <div class="absolute -top-10 -right-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="relative z-10 max-w-3xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Info Akademis & Medis</h1>
-        <p class="text-lg text-white/80 leading-relaxed">
-            Sumber pengetahuan terpercaya mengenai perkembangan akademis dan kesehatan bagi anak dengan Down Syndrome.
-        </p>
-    </div>
-</section>
+<div class="bg-gray-50/50 min-h-screen py-12 px-6 md:px-12 pt-24 md:pt-32">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header, Filters & Search -->
+        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-10 gap-6">
+            
+            <!-- Filters -->
+            @php
+                $categories = [
+                    '' => 'Semua Sumber Daya',
+                    'Sekolah' => 'Sekolah',
+                    'Rumah Sakit' => 'Rumah Sakit',
+                    'Pusat Terapi' => 'Pusat Terapi',
+                    'Pusat Tumbuh Kembang' => 'Pusat Tumbuh Kembang'
+                ];
+                $currentCategory = request('category', '');
+            @endphp
+            
+            <div class="flex flex-wrap gap-3">
+                @foreach($categories as $value => $label)
+                    <a href="{{ route('medical_infos.index', array_merge(request()->query(), ['category' => $value])) }}" 
+                       class="px-5 py-2.5 rounded-full text-sm font-semibold transition-colors duration-200 border {{ $currentCategory == $value ? 'bg-potads-yellow text-potads-blue border-potads-yellow shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-potads-blue hover:text-potads-blue' }}">
+                        {{ $label }}
+                    </a>
+                @endforeach
+            </div>
 
-<!-- Content Section -->
-<section class="px-6 md:px-12 py-20 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        @forelse($infos as $info)
-            <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 flex flex-col group hover:shadow-xl transition-all duration-500">
-                <div class="relative h-64 bg-slate-100 overflow-hidden">
-                    @if($info->image)
-                        <img src="{{ asset('storage/' . $info->image) }}" alt="{{ $info->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center bg-blue-50">
-                            <i data-lucide="activity" class="w-16 h-16 text-blue-200"></i>
+            <!-- Search Bar -->
+            <form action="{{ route('medical_infos.index') }}" method="GET" class="w-full xl:w-auto relative flex-shrink-0">
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search......." class="pl-5 pr-20 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-potads-blue w-full xl:w-72 shadow-sm text-sm">
+                <button type="submit" class="absolute right-1 top-1.5 bottom-1.5 bg-potads-blue text-white px-5 rounded-full text-sm font-semibold hover:bg-blue-900 transition-colors">
+                    Cari
+                </button>
+            </form>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" id="medicalGrid">
+            @forelse($infos as $index => $info)
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 transition-all flex flex-col h-full info-card {{ $index >= 6 ? 'hidden' : '' }}">
+                    
+                    <!-- Image with Badge -->
+                    <div class="relative h-56">
+                        @php
+                            $imgSrc = $info->image 
+                                ? (Str::startsWith($info->image, 'http') ? $info->image : asset('storage/' . $info->image)) 
+                                : 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop';
+                        @endphp
+                        <img src="{{ $imgSrc }}" alt="{{ $info->title }}" class="w-full h-full object-cover">
+                        
+                        <div class="absolute top-4 right-4 bg-potads-yellow text-potads-blue font-bold px-4 py-1.5 rounded-full text-xs shadow-sm">
+                            {{ $info->category ?: 'Akademis' }}
                         </div>
-                    @endif
-                    <div class="absolute top-4 left-4">
-                        <span class="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/90 backdrop-blur-md shadow-sm text-potads-blue">
-                            {{ ucfirst($info->category) }}
-                        </span>
                     </div>
-                </div>
 
-                <div class="p-8 flex-1 flex flex-col">
-                    <h3 class="text-xl font-bold text-potads-blue mb-4 group-hover:text-blue-600 transition-colors line-clamp-2">{{ $info->title }}</h3>
-                    <p class="text-slate-500 text-sm mb-8 line-clamp-3 leading-relaxed">
-                        {{ Str::limit(strip_tags($info->content), 120) }}
-                    </p>
-                    <div class="mt-auto flex items-center justify-between">
-                        <span class="text-xs text-slate-400 flex items-center gap-1">
-                            <i data-lucide="calendar" class="w-3 h-3"></i> {{ $info->created_at->format('d M Y') }}
-                        </span>
-                        <a href="{{ route('medical_infos.show', $info->slug) }}" class="text-potads-blue font-bold text-sm hover:translate-x-1 transition-transform flex items-center gap-1">
-                            Baca Selengkapnya <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <!-- Card Body -->
+                    <div class="p-8 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-potads-blue mb-3 leading-tight line-clamp-2">
+                            {{ $info->title }}
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-6 line-clamp-3">
+                            {{ strip_tags($info->content) }}
+                        </p>
+                        
+                        <!-- Contact / Address placeholders based on mockup -->
+                        <div class="space-y-2 mb-8 mt-auto">
+                            <div class="flex items-start gap-3 text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-potads-blue flex-shrink-0 mt-0.5"></i>
+                                <span>{{ $info->address ?? 'Alamat: Hubungi atau cek detail untuk alamat lengkap' }}</span>
+                            </div>
+                            <div class="flex items-start gap-3 text-sm text-gray-500">
+                                <i data-lucide="phone" class="w-4 h-4 text-potads-blue flex-shrink-0 mt-0.5"></i>
+                                <span>{{ $info->phone ?? 'Kontak: Tersedia di detail halaman' }}</span>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('medical_infos.show', $info->slug) }}" class="block w-full text-center bg-blue-50 text-potads-blue px-6 py-3 rounded-full font-bold text-sm hover:bg-potads-blue hover:text-white transition-colors">
+                            Lihat Detail
                         </a>
                     </div>
                 </div>
-            </div>
-        @empty
-            <div class="col-span-3 py-20 text-center">
-                <i data-lucide="book-open" class="w-16 h-16 text-slate-200 mx-auto mb-4"></i>
-                <p class="text-slate-400 font-medium">Belum ada informasi tersedia saat ini.</p>
-            </div>
-        @endforelse
-    </div>
+            @empty
+                <div class="col-span-full py-20 text-center text-gray-500 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                    <i data-lucide="folder-search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                    <p class="text-lg">Informasi Akademis & Medis belum tersedia.</p>
+                </div>
+            @endforelse
+        </div>
 
-    <div class="mt-16">
-        {{ $infos->links() }}
+        <!-- Load More -->
+        <div class="flex justify-center mt-12" id="loadMoreContainer">
+            <button type="button" onclick="showAllInfos()" class="border-[1.5px] border-potads-blue text-potads-blue bg-white font-bold px-24 py-3.5 rounded-2xl hover:bg-blue-50 transition-colors flex items-center gap-3 shadow-sm">
+                Muat Lebih Banyak <i data-lucide="chevron-down" class="w-5 h-5 text-potads-blue"></i>
+            </button>
+        </div>
+        
+        <script>
+            function showAllInfos() {
+                const cards = document.querySelectorAll('.info-card.hidden');
+                cards.forEach(card => {
+                    card.classList.remove('hidden');
+                });
+                document.getElementById('loadMoreContainer').style.display = 'none';
+            }
+        </script>
     </div>
-</section>
+</div>
 @endsection

@@ -29,6 +29,7 @@ Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name
 
 // Public Material Routes
 Route::get('/materi', [\App\Http\Controllers\MaterialController::class, 'index'])->name('materials.index');
+Route::get('/materi/{material}', [\App\Http\Controllers\MaterialController::class, 'show'])->name('materials.show');
 
 // Public FAQ Routes
 Route::get('/faq', [\App\Http\Controllers\FaqController::class, 'index'])->name('faqs.index');

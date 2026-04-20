@@ -29,6 +29,8 @@ class MedicalInfoController extends Controller
             'category' => 'required|in:akademis,medis',
             'status' => 'required|in:draft,published',
             'image' => 'nullable|image|max:2048',
+            'address' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
         ]);
 
         $data = $validated;
@@ -56,6 +58,8 @@ class MedicalInfoController extends Controller
             'category' => 'required|in:akademis,medis',
             'status' => 'required|in:draft,published',
             'image' => 'nullable|image|max:2048',
+            'address' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
         ]);
 
         $data = $validated;

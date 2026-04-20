@@ -29,6 +29,7 @@ class MaterialController extends Controller
             'url' => 'required_if:type,video|nullable|url',
             'file' => 'required_if:type,file|nullable|file|max:20480', // 20MB max
             'category' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $data = $validated;
@@ -36,6 +37,10 @@ class MaterialController extends Controller
 
         if ($request->hasFile('file') && $validated['type'] === 'file') {
             $data['file_path'] = $request->file('file')->store('materials', 'public');
+        }
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('materials/images', 'public');
         }
 
         Material::create($data);
@@ -57,6 +62,7 @@ class MaterialController extends Controller
             'url' => 'required_if:type,video|nullable|url',
             'file' => 'nullable|file|max:20480',
             'category' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $data = $validated;
@@ -75,6 +81,13 @@ class MaterialController extends Controller
             }
         }
 
+        if ($request->hasFile('image')) {
+            if ($material->image) {
+                Storage::disk('public')->delete($material->image);
+            }
+            $data['image'] = $request->file('image')->store('materials/images', 'public');
+        }
+
         $material->update($data);
 
         return redirect()->route('admin.materials.index')->with('success', 'Materi berhasil diperbarui.');
@@ -84,6 +97,9 @@ class MaterialController extends Controller
     {
         if ($material->file_path) {
             Storage::disk('public')->delete($material->file_path);
+        }
+        if ($material->image) {
+            Storage::disk('public')->delete($material->image);
         }
         $material->delete();
         return redirect()->route('admin.materials.index')->with('success', 'Materi berhasil dihapus.');

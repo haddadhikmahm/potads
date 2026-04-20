@@ -1,82 +1,69 @@
 @extends('layouts.frontend')
 
-@section('title', 'Materi & Sumber Daya - PIK POTADS')
+@section('title', 'PIK POTADS - File Materi Orang Tua')
 
 @section('content')
-<!-- Hero Section -->
-<section class="bg-potads-blue py-20 px-6 md:px-12 text-center text-white relative overflow-hidden">
-    <div class="absolute -top-10 -left-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="relative z-10 max-w-3xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Materi & Sumber Daya</h1>
-        <p class="text-lg text-white/80 leading-relaxed">
-            Kumpulan video edukasi, modul latihan, dan panduan lengkap untuk mendukung tumbuh kembang anak dengan Down Syndrome.
-        </p>
-    </div>
-</section>
+<div class="bg-gray-50/50 min-h-screen py-12 px-6 md:px-12 pt-24 md:pt-32">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header & Search -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <h1 class="text-3xl font-extrabold text-potads-blue">File Materi Orang Tua</h1>
+            
+            <form action="{{ route('materials.index') }}" method="GET" class="w-full md:w-auto relative">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search......." class="pl-5 pr-20 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-potads-blue w-full md:w-80 shadow-sm text-sm">
+                <button type="submit" class="absolute right-1 top-1.5 bottom-1.5 bg-potads-blue text-white px-5 rounded-full text-sm font-semibold hover:bg-blue-900 transition-colors">
+                    Cari
+                </button>
+            </form>
+        </div>
 
-<!-- Content Section -->
-<section class="px-6 md:px-12 py-20 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        @forelse($materials as $material)
-            <div class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 flex flex-col group hover:shadow-xl transition-all duration-500">
-                <div class="relative h-48 bg-slate-100 overflow-hidden">
-                    @if($material->type === 'video')
-                        @php
-                            $videoId = '';
-                            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i', $material->url, $matches)) {
-                                $videoId = $matches[1];
-                            }
-                        @endphp
-                        @if($videoId)
-                            <img src="https://img.youtube.com/vi/{{ $videoId }}/maxresdefault.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1492724441997-5dc865305da7?q=80&w=2070&auto=format&fit=crop'">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center bg-slate-200">
-                                <i data-lucide="play-circle" class="w-12 h-12 text-slate-400"></i>
-                            </div>
-                        @endif
-                        <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <i data-lucide="play" class="w-12 h-12 text-white fill-current"></i>
+        <!-- Materials Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" id="materialsGrid">
+            @forelse($materials as $index => $material)
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 transition-all flex flex-col h-full material-card {{ $index >= 6 ? 'hidden' : '' }}">
+                    @php
+                        $imgSrc = $material->image ? asset('storage/' . $material->image) : 'https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=2070&auto=format&fit=crop';
+                    @endphp
+                    <img src="{{ $imgSrc }}" alt="{{ $material->title }}" class="w-full h-56 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-potads-blue mb-3 text-center line-clamp-2 leading-tight">
+                            {{ $material->title }}
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-6 text-center line-clamp-3">
+                            {{ $material->description }}
+                        </p>
+                        <div class="mt-auto flex justify-end">
+                            <a href="{{ route('materials.show', $material->id) }}" class="inline-block bg-blue-50 text-potads-blue px-6 py-2 rounded-full font-bold text-sm hover:bg-potads-blue hover:text-white transition-colors">
+                                Lihat Detail
+                            </a>
                         </div>
-                    @else
-                        <div class="w-full h-full flex items-center justify-center bg-amber-50">
-                            <i data-lucide="file-text" class="w-16 h-16 text-amber-200"></i>
-                        </div>
-                    @endif
-                    <div class="absolute top-4 left-4">
-                        <span class="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/90 backdrop-blur-md shadow-sm text-potads-blue">
-                            {{ $material->category ?? 'Materi' }}
-                        </span>
                     </div>
                 </div>
-
-                <div class="p-8 flex-1 flex flex-col text-center">
-                    <h3 class="text-xl font-bold text-potads-blue mb-4 group-hover:text-blue-600 transition-colors line-clamp-2">{{ $material->title }}</h3>
-                    <p class="text-slate-500 text-sm mb-8 line-clamp-3 leading-relaxed">
-                        {{ $material->description }}
-                    </p>
-                    <div class="mt-auto">
-                        @if($material->type === 'video')
-                            <a href="{{ $material->url }}" target="_blank" class="w-full py-3 bg-blue-50 text-potads-blue rounded-xl font-bold hover:bg-potads-blue hover:text-white transition-all flex items-center justify-center gap-2">
-                                <i data-lucide="external-link" class="w-4 h-4"></i> Lihat Video
-                            </a>
-                        @else
-                            <a href="{{ asset('storage/' . $material->file_path) }}" target="_blank" class="w-full py-3 bg-amber-50 text-amber-700 rounded-xl font-bold hover:bg-amber-600 hover:text-white transition-all flex items-center justify-center gap-2">
-                                <i data-lucide="download" class="w-4 h-4"></i> Download File
-                            </a>
-                        @endif
-                    </div>
+            @empty
+                <div class="col-span-full py-12 text-center text-gray-500">
+                    <i data-lucide="folder-open" class="w-12 h-12 mx-auto mb-4 text-gray-300"></i>
+                    <p>Materi belum tersedia saat ini.</p>
                 </div>
-            </div>
-        @empty
-            <div class="col-span-3 py-20 text-center">
-                <i data-lucide="file-question" class="w-16 h-16 text-slate-200 mx-auto mb-4"></i>
-                <p class="text-slate-400 font-medium">Belum ada materi yang tersedia saat ini.</p>
-            </div>
-        @endforelse
-    </div>
+            @endforelse
+        </div>
 
-    <div class="mt-16">
-        {{ $materials->links() }}
+        <!-- Load More -->
+        <div class="flex justify-center mt-12" id="loadMoreContainer">
+            <button type="button" onclick="showAllCards()" class="border-[1.5px] border-potads-blue text-potads-blue bg-white font-bold px-16 py-3 rounded-2xl hover:bg-blue-50 transition-colors flex items-center gap-3 shadow-sm">
+                Muat Lebih Banyak <i data-lucide="chevron-down" class="w-5 h-5 text-potads-blue"></i>
+            </button>
+        </div>
+        
+        <script>
+            function showAllCards() {
+                const cards = document.querySelectorAll('.material-card.hidden');
+                cards.forEach(card => {
+                    card.classList.remove('hidden');
+                });
+                // Sembunyikan tombol setelah diklik
+                document.getElementById('loadMoreContainer').style.display = 'none';
+            }
+        </script>
     </div>
-</section>
+</div>
 @endsection

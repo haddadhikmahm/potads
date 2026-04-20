@@ -33,10 +33,10 @@
             <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">Tentang Kami</a>
             <a href="{{ route('events.index') }}" class="{{ request()->routeIs('events.*') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">Event</a>
             <a href="{{ route('articles.index') }}" class="{{ request()->routeIs('articles.*') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">Artikel</a>
-            <div class="flex items-center gap-1 cursor-pointer hover:text-potads-yellow">
+            <a href="{{ route('materials.index') }}" class="flex items-center gap-1 {{ request()->routeIs('materials.*') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">
                 Materi <i data-lucide="chevron-down" class="w-4 h-4"></i>
-            </div>
-            <a href="#" class="hover:text-potads-yellow transition">Akademis & Medis</a>
+            </a>
+            <a href="{{ route('medical_infos.index') }}" class="{{ request()->routeIs('medical_infos.*') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">Akademis & Medis</a>
         </div>
 
         <div class="flex items-center gap-4">

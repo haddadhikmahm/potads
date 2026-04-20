@@ -30,6 +30,14 @@
                     @error('description') <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
 
+                <!-- Image (Thumbnail) -->
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-potads-blue uppercase tracking-wider ml-1">Gambar Sampul (Opsional)</label>
+                    <input type="file" name="image"
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-potads-blue/10 transition-all text-slate-700 font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-potads-blue/10 file:text-potads-blue hover:file:bg-potads-blue/20">
+                    @error('image') <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p> @enderror
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Type Selection -->
                     <div class="space-y-2" x-data="{ type: '{{ old('type', 'video') }}' }">

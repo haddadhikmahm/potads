@@ -61,6 +61,26 @@
                         placeholder="Tuliskan isi informasi di sini...">{{ old('content') }}</textarea>
                     @error('content') <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Address -->
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-potads-blue uppercase tracking-wider ml-1">Alamat Peta (Opsional)</label>
+                        <input type="text" name="address" value="{{ old('address') }}"
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-potads-blue/10 transition-all text-slate-700 font-medium @error('address') ring-2 ring-red-500/20 @enderror"
+                            placeholder="Contoh: Bandung, Jawa Barat">
+                        @error('address') <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-bold text-potads-blue uppercase tracking-wider ml-1">Nomor Kontak (Opsional)</label>
+                        <input type="text" name="phone" value="{{ old('phone') }}"
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-potads-blue/10 transition-all text-slate-700 font-medium @error('phone') ring-2 ring-red-500/20 @enderror"
+                            placeholder="Contoh: 08123456789">
+                        @error('phone') <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
             </div>
 
             <div class="flex items-center gap-4 pt-6">
