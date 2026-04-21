@@ -107,15 +107,11 @@
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar -->
-        <aside class="w-72 bg-potads-blue flex-shrink-0 flex flex-col h-full overflow-hidden transition-all duration-300">
+        <aside id="admin-sidebar" class="w-72 bg-potads-blue flex-shrink-0 flex flex-col h-full overflow-hidden transition-all duration-300 absolute md:relative z-50 -translate-x-full md:translate-x-0">
             <!-- Sidebar Header -->
             <div class="px-8 py-6 flex flex-col items-center">
-                <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm p-1.5 mb-2">
-                    <svg viewBox="0 0 100 100" class="w-full h-full text-red-600">
-                        <path d="M50 20 L80 80 L20 80 Z" fill="none" stroke="currentColor" stroke-width="8" />
-                        <circle cx="50" cy="45" r="10" fill="currentColor" />
-                        <path d="M30 70 Q50 90 70 70" fill="none" stroke="currentColor" stroke-width="5" />
-                    </svg>
+                <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm p-1.5 mb-2">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="w-full h-full object-contain">
                 </div>
                 <h1 class="text-white font-bold text-lg tracking-wider">Admin POTADS</h1>
             </div>
@@ -161,12 +157,21 @@
             </div>
         </aside>
 
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden md:hidden"></div>
+
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col h-full overflow-hidden">
+        <div class="flex-1 flex flex-col h-full overflow-hidden relative">
             <!-- Top Navbar -->
-            <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 flex-shrink-0">
+            <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 md:px-8 flex-shrink-0 gap-4">
+                
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-sidebar-btn" class="md:hidden p-2 text-slate-500 hover:text-potads-blue focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
                 <!-- Search Bar -->
-                <div class="flex-1 max-w-md relative">
+                <div class="hidden md:block flex-1 max-w-md relative">
                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                         <i data-lucide="search" class="w-5 h-5"></i>
                     </span>
@@ -297,6 +302,26 @@
                 if (form) showAlert.confirmDelete(form);
             }
         });
+        // Mobile Sidebar Toggle
+        const sidebarBtn = document.getElementById('mobile-sidebar-btn');
+        const adminSidebar = document.getElementById('admin-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        if (sidebarBtn && adminSidebar && sidebarOverlay) {
+            function toggleSidebar() {
+                const isOpen = !adminSidebar.classList.contains('-translate-x-full');
+                if (isOpen) {
+                    adminSidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                } else {
+                    adminSidebar.classList.remove('-translate-x-full');
+                    sidebarOverlay.classList.remove('hidden');
+                }
+            }
+
+            sidebarBtn.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+        }
     </script>
     @stack('scripts')
 </body>

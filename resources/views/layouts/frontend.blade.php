@@ -21,10 +21,10 @@
 <body class="bg-white text-gray-800">
 
     <!-- Navbar -->
-    <nav class="bg-potads-blue py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <a href="{{ route('home') }}" class="bg-white p-1 rounded">
-                <img src="https://img.freepik.com/free-vector/colorful-hand-drawn-community-logo_23-2148141253.jpg" alt="Logo" class="h-10 w-10 object-contain">
+    <nav class="bg-potads-blue py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50 relative">
+        <div class="flex items-center gap-2 z-50">
+            <a href="{{ route('home') }}" class="bg-white p-2 rounded">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-10 w-auto object-contain">
             </a>
         </div>
         
@@ -39,18 +39,18 @@
             <a href="{{ route('medical_infos.index') }}" class="{{ request()->routeIs('medical_infos.*') ? 'border-b-2 border-potads-yellow pb-1 text-potads-yellow' : 'hover:text-potads-yellow transition' }}">Akademis & Medis</a>
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-4">
             @auth
                 <div class="flex items-center gap-4">
                     <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="text-white hover:text-potads-yellow transition flex items-center gap-2">
                         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                        <span class="hidden md:inline font-medium">{{ auth()->user()->name }}</span>
+                        <span class="inline font-medium">{{ auth()->user()->name }}</span>
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-600 transition text-sm flex items-center gap-2">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
-                            <span class="hidden md:inline">Logout</span>
+                            <span class="inline">Logout</span>
                         </button>
                     </form>
                 </div>
@@ -61,7 +61,45 @@
                 </div>
             @endauth
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden flex items-center text-white focus:outline-none z-50">
+            <i data-lucide="menu" class="w-6 h-6" id="menu-icon"></i>
+            <i data-lucide="x" class="w-6 h-6 hidden" id="close-icon"></i>
+        </button>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-potads-blue flex-col items-center justify-center gap-6 hidden opacity-0 transition-opacity duration-300">
+        <div class="flex flex-col items-center gap-6 text-white font-medium text-lg w-full px-6 text-center">
+            <a href="{{ route('home') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('home') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Beranda</a>
+            <a href="{{ route('about') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('about') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Tentang Kami</a>
+            <a href="{{ route('events.index') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('events.*') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Event</a>
+            <a href="{{ route('articles.index') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('articles.*') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Artikel</a>
+            <a href="{{ route('materials.index') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('materials.*') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Materi</a>
+            <a href="{{ route('medical_infos.index') }}" class="w-full py-2 border-b border-white/10 {{ request()->routeIs('medical_infos.*') ? 'text-potads-yellow' : 'hover:text-white transition' }}">Akademis & Medis</a>
+
+            @auth
+                <div class="w-full py-2 flex flex-col items-center gap-4 mt-4">
+                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="text-potads-yellow hover:text-white transition flex items-center gap-2">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="font-medium">{{ auth()->user()->name }}</span>
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full flex justify-center">
+                        @csrf
+                        <button type="submit" class="bg-red-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-600 transition text-sm flex items-center gap-2">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="w-full py-2 flex flex-col items-center gap-4 mt-4">
+                    <a href="{{ route('login') }}" class="bg-potads-yellow text-potads-blue px-8 py-3 rounded-lg font-bold hover:bg-yellow-400 transition w-full max-w-[200px]">Login</a>
+                </div>
+            @endauth
+        </div>
+    </div>
 
     <main>
         @yield('content')
@@ -72,7 +110,7 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div class="md:col-span-1">
                 <div class="bg-white p-2 rounded inline-block mb-6">
-                    <img src="https://img.freepik.com/free-vector/colorful-hand-drawn-community-logo_23-2148141253.jpg" alt="Logo" class="h-10 w-10">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-10 w-auto">
                 </div>
                 <p class="text-white/70 text-sm leading-relaxed">
                     {{ $siteSettings['site_description'] ?? 'Mendukung setiap perjalanan melalui aksi komunitas yang inklusif.' }}
@@ -127,6 +165,34 @@
 
     <script>
         lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                    setTimeout(() => mobileMenu.classList.remove('opacity-0'), 10);
+                    menuIcon.classList.add('hidden');
+                    closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                } else {
+                    mobileMenu.classList.add('opacity-0');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('flex');
+                    }, 300);
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
     </script>
     @stack('scripts')
 </body>
