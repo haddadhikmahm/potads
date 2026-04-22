@@ -3,8 +3,8 @@
 @section('title', 'PIK POTADS - Akademis & Medis')
 
 @section('content')
-<div class="bg-gray-50/50 min-h-screen py-12 px-6 md:px-12 pt-24 md:pt-32">
-    <div class="max-w-7xl mx-auto">
+<div class="bg-gray-50/50 min-h-screen py-12 px-6 md:px-12 lg:px-16 pt-16 md:pt-24">
+    <div class="max-w-[1850px] mx-auto">
         <!-- Header, Filters & Search -->
         <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-10 gap-6">
             
@@ -95,11 +95,13 @@
         </div>
 
         <!-- Load More -->
-        <div class="flex justify-center mt-12" id="loadMoreContainer">
-            <button type="button" onclick="showAllInfos()" class="border-[1.5px] border-potads-blue text-potads-blue bg-white font-bold px-24 py-3.5 rounded-2xl hover:bg-blue-50 transition-colors flex items-center gap-3 shadow-sm">
-                Muat Lebih Banyak <i data-lucide="chevron-down" class="w-5 h-5 text-potads-blue"></i>
-            </button>
-        </div>
+        @if($infos->count() > 6)
+            <div class="flex justify-center mt-12" id="loadMoreContainer">
+                <button type="button" onclick="showAllInfos()" class="border-[1.5px] border-potads-blue text-potads-blue bg-white font-bold px-24 py-3.5 rounded-2xl hover:bg-blue-50 transition-colors flex items-center gap-3 shadow-sm">
+                    Muat Lebih Banyak <i data-lucide="chevron-down" class="w-5 h-5 text-potads-blue"></i>
+                </button>
+            </div>
+        @endif
         
         <script>
             function showAllInfos() {

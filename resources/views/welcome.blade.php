@@ -5,7 +5,7 @@
 @section('content')
     <!-- Hero Section -->
     <section class="px-6 md:px-12 py-8">
-        <div class="relative rounded-3xl overflow-hidden bg-gray-900 aspect-[21/9] flex items-center"
+        <div class="relative rounded-[2.5rem] overflow-hidden bg-gray-900 h-[550px] md:h-auto md:aspect-[21/9] flex items-center"
              x-data="{ 
                 activeSlide: 1, 
                 slides: [
@@ -27,15 +27,15 @@
                      alt="Hero Image">
             </template>
 
-            <div class="relative z-10 px-12 max-w-2xl text-white pt-10 pb-10">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
-                    Selamat Datang <br> di <span class="text-potads-yellow">PIK POTADS</span>
+            <div class="relative z-10 px-8 md:px-20 max-w-4xl text-white py-12 md:py-0 text-center md:text-left">
+                <h1 class="text-3xl md:text-7xl font-extrabold mb-6 leading-tight">
+                    Selamat Datang <br class="hidden md:block"> di <span class="text-potads-yellow">PIK POTADS</span>
                 </h1>
-                <p class="text-lg md:text-xl mb-8 text-gray-100">
+                <p class="text-base md:text-2xl mb-10 text-gray-100 leading-relaxed max-w-xl mx-auto md:mx-0">
                     Menyediakan sumber daya, komunitas, dan advokasi yang dibutuhkan untuk membantu individu dengan Down Syndrome berkembang di setiap tahap kehidupan.
                 </p>
-                <a href="{{ route('donations.index') }}" class="bg-potads-yellow text-potads-blue px-8 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:scale-105 transition-transform">
-                    Donasi Sekarang <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
+                <a href="{{ route('donations.index') }}" class="bg-potads-yellow text-potads-blue px-10 py-5 rounded-2xl font-extrabold inline-flex items-center gap-3 hover:scale-105 transition-transform shadow-xl">
+                    Donasi Sekarang <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
                 </a>
             </div>
 
@@ -77,41 +77,49 @@
     </section>
 
     <!-- About Section -->
-    <section class="px-6 md:px-12 py-20 flex flex-col md:flex-row items-center gap-16">
-        <div class="w-full md:w-1/2 relative">
-            <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-potads-yellow rounded-2xl z-0"></div>
-            <div class="absolute -top-6 -left-6 w-16 h-16 bg-blue-100 rounded-full z-0"></div>
-            <img src="https://images.unsplash.com/photo-1594608661623-aa0bd3a69d98?q=80&w=1896&auto=format&fit=crop" alt="Beda Tapi Keren" class="rounded-3xl shadow-2xl relative z-10 w-full object-cover aspect-square">
-        </div>
-        <div class="w-full md:w-1/2">
-            <h2 class="text-4xl font-extrabold text-potads-blue mb-6">BEDA TAPI <span class="text-potads-yellow">KEREN</span></h2>
-            <p class="text-gray-600 mb-8 leading-relaxed">
-                Walaupun berbeda, tetapi anak-anak dengan Down Syndrome di Jawa Barat tetap mampu berkarya, berprestasi, dan menunjukkan keistimewaan dalam berbagai bidang.
-            </p>
-            
-            <div class="space-y-6">
-                <!-- Visi -->
-                <div class="flex gap-4 p-6 bg-white rounded-2xl shadow-sm border-l-4 border-potads-yellow">
-                    <div class="text-potads-blue pt-1">
-                        <i data-lucide="eye" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-potads-blue text-lg mb-2">Visi Kami</h4>
-                        <p class="text-gray-500 text-sm">Menjadi pusat informasi dan konsultasi terlengkap tentang Down Syndrome di Indonesia.</p>
-                    </div>
+    <section class="px-6 md:px-12 py-24 bg-gray-50/30">
+        <div class="bg-white rounded-[3rem] overflow-hidden shadow-sm flex flex-col lg:flex-row items-center p-8 md:p-16 gap-16 md:gap-24">
+            <!-- Left side: Image and decorations -->
+            <div class="w-full lg:w-5/12 relative">
+                <!-- Decorative yellow box behind -->
+                <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-potads-yellow rounded-[2.5rem] z-0"></div>
+                <!-- Sage green image container -->
+                <div class="relative z-10 bg-[#98AC82] rounded-[2.5rem] p-6 shadow-xl aspect-square flex items-center justify-center">
+                    <img src="{{ asset('assets/images/about-illustration.png') }}" 
+                         alt="Beda Tapi Keren" 
+                         class="w-full h-full object-contain">
                 </div>
-                <!-- Misi -->
-                <div class="flex gap-4 p-6 bg-white rounded-2xl shadow-sm border-l-4 border-potads-blue">
-                    <div class="text-potads-blue pt-1">
-                        <i data-lucide="target" class="w-6 h-6"></i>
+            </div>
+            
+            <!-- Right side: Content -->
+            <div class="w-full lg:w-7/12">
+                <h2 class="text-5xl font-extrabold text-potads-blue mb-8">BEDA TAPI <span class="text-potads-yellow">KEREN</span></h2>
+                <p class="text-gray-600 mb-10 leading-relaxed text-lg">
+                    Walaupun berbeda, tetapi anak-anak dengan Down Syndrome di Jawa Barat tetap mampu berkarya, berprestasi, dan menunjukkan keistimewaan dalam berbagai bidang.
+                </p>
+                
+                <div class="space-y-10">
+                    <!-- Visi -->
+                    <div class="relative pl-10 border-l-4 border-potads-yellow">
+                        <div class="flex items-center gap-3 mb-3 text-potads-blue">
+                            <i data-lucide="eye" class="w-6 h-6"></i>
+                            <h4 class="font-bold text-2xl">Visi Kami</h4>
+                        </div>
+                        <p class="text-gray-500 text-lg">Menjadi pusat informasi dan konsultasi terlengkap tentang Down Syndrome di Indonesia.</p>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-potads-blue text-lg mb-2">Misi Kami</h4>
-                        <ul class="text-gray-500 text-sm space-y-1">
-                            <li>• Memiliki pusat informasi terlengkap</li>
-                            <li>• Menyediakan informasi terkini</li>
-                            <li>• Menyebarluaskan informasi mengenai Down Syndrome</li>
-                            <li>• Memberikan konsultasi berkelanjutan</li>
+                    
+                    <!-- Misi -->
+                    <div class="relative pl-10 border-l-4 border-potads-blue">
+                        <div class="flex items-center gap-3 mb-3 text-potads-blue">
+                            <i data-lucide="target" class="w-6 h-6"></i>
+                            <h4 class="font-bold text-2xl">Misi Kami</h4>
+                        </div>
+                        <ul class="text-gray-500 space-y-2 text-lg">
+                            <li>- Memiliki pusat informasi terlengkap</li>
+                            <li>- Menyediakan informasi terkini</li>
+                            <li>- Menyebarluaskan informasi mengenai Down Syndrome</li>
+                            <li>- Memberikan konsultasi berkelanjutan</li>
+                            <li>- Menyelenggarakan kegiatan-kegiatan</li>
                         </ul>
                     </div>
                 </div>
@@ -188,7 +196,7 @@
 
     <!-- Create Event Section -->
     <section class="px-6 md:px-12 py-12">
-        <div class="bg-white border-2 border-blue-400 rounded-3xl overflow-hidden flex flex-col md:flex-row items-center p-8 md:p-0">
+        <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm flex flex-col md:flex-row items-center p-8 md:p-0">
             <div class="w-full md:w-1/2 p-4">
                 <img src="https://images.unsplash.com/photo-1522071823990-b99787a07a3c?q=80&w=2070&auto=format&fit=crop" alt="Adakan Acara" class="rounded-2xl w-full h-80 object-cover shadow-lg">
             </div>
@@ -233,22 +241,32 @@
     </section>
 
     <!-- Achievement Section -->
-    <section class="px-6 md:px-12 py-20 bg-blue-50/30">
-        <div class="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
-            <div class="w-full md:w-1/2">
-                <h2 class="text-5xl font-extrabold text-potads-blue mb-8 border-l-4 border-potads-yellow pl-6">
-                    Achievement <span class="text-potads-yellow">POTADS</span>
-                </h2>
-                <img src="https://images.unsplash.com/photo-1484665754804-74b091211472?q=80&w=2070&auto=format&fit=crop" alt="Achievement" class="w-full rounded-[2rem] shadow-xl">
-            </div>
-            <div class="w-full md:w-1/2 text-center md:text-left">
-                <h3 class="text-4xl font-bold text-gray-800 mb-6">Sentuhan Kasih: Charity Day</h3>
-                <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                    merupakan kegiatan sosial yang bertujuan untuk menumbuhkan kepedulian dan semangat berbagi melalui aksi nyata ...
-                </p>
-                <button class="bg-potads-blue text-white px-10 py-4 rounded-full font-bold flex items-center gap-3 mx-auto md:mx-0 hover:bg-blue-900 transition">
-                    Baca Artikel <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                </button>
+    <section class="px-6 md:px-12 py-24 bg-blue-50/50">
+        <div class="w-full">
+            <h2 class="text-4xl md:text-6xl font-extrabold text-potads-blue mb-16 border-l-[12px] border-potads-yellow pl-10 leading-tight">
+                Achievement <span class="text-potads-yellow">POTADS</span>
+            </h2>
+            
+            <div class="flex flex-col lg:flex-row items-center gap-16 md:gap-32">
+                <!-- Left: Image -->
+                <div class="w-full lg:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1484665754804-74b091211472?q=80&w=2070&auto=format&fit=crop" 
+                         alt="Achievement" 
+                         class="w-full rounded-[3.5rem] shadow-2xl object-cover aspect-[16/10]">
+                </div>
+                
+                <!-- Right: Content -->
+                <div class="w-full lg:w-1/2 text-left">
+                    <h3 class="text-4xl md:text-6xl font-bold text-gray-800 mb-8 leading-tight">
+                        Sentuhan Kasih: <br class="hidden xl:block"> Charity Day
+                    </h3>
+                    <p class="text-gray-500 text-xl md:text-2xl mb-12 leading-relaxed">
+                        merupakan kegiatan sosial yang bertujuan untuk menumbuhkan kepedulian dan semangat berbagi melalui aksi nyata ...
+                    </p>
+                    <a href="{{ route('articles.index') }}" class="bg-potads-blue text-white px-20 py-6 rounded-full font-extrabold inline-flex items-center gap-4 hover:bg-blue-900 transition-all shadow-xl hover:scale-105 text-lg">
+                        Baca Artikel <i data-lucide="arrow-right" class="w-7 h-7"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
