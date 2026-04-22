@@ -5,9 +5,29 @@
 @section('content')
     <!-- Hero Section -->
     <section class="px-6 md:px-12 py-8">
-        <div class="relative rounded-3xl overflow-hidden bg-gray-900 aspect-[21/9] flex items-center">
-            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop" alt="Hero Image" class="absolute inset-0 w-full h-full object-cover opacity-60">
-            <div class="relative z-10 px-12 max-w-2xl text-white">
+        <div class="relative rounded-3xl overflow-hidden bg-gray-900 aspect-[21/9] flex items-center"
+             x-data="{ 
+                activeSlide: 1, 
+                slides: [
+                    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=2070&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2070&auto=format&fit=crop'
+                ],
+                init() {
+                    setInterval(() => {
+                        this.activeSlide = this.activeSlide === this.slides.length ? 1 : this.activeSlide + 1;
+                    }, 5000);
+                }
+             }">
+             
+            <template x-for="(slide, index) in slides" :key="index">
+                <img :src="slide" 
+                     class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+                     :class="activeSlide === index + 1 ? 'opacity-60 z-0' : 'opacity-0 -z-10'"
+                     alt="Hero Image">
+            </template>
+
+            <div class="relative z-10 px-12 max-w-2xl text-white pt-10 pb-10">
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
                     Selamat Datang <br> di <span class="text-potads-yellow">PIK POTADS</span>
                 </h1>
@@ -18,11 +38,15 @@
                     Donasi Sekarang <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
                 </a>
             </div>
+
             <!-- Pagination indicator dots -->
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-                <div class="w-8 h-2 bg-potads-yellow rounded-full"></div>
-                <div class="w-8 h-2 bg-white/40 rounded-full"></div>
-                <div class="w-8 h-2 bg-white/40 rounded-full"></div>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                <template x-for="(slide, index) in slides" :key="index">
+                    <button @click="activeSlide = index + 1"
+                            class="h-2 rounded-full transition-all duration-300"
+                            :class="activeSlide === index + 1 ? 'w-8 bg-potads-yellow' : 'w-4 bg-white/40 hover:bg-white/60'">
+                    </button>
+                </template>
             </div>
         </div>
     </section>
@@ -144,12 +168,12 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($events as $event)
                 <div class="relative h-[400px] rounded-3xl overflow-hidden group">
-                    <img src="{{ Str::startsWith($event->image, 'http') ? $event->image : asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-potads-blue/90 via-transparent to-transparent p-10 flex flex-col justify-end">
-                        <h3 class="text-2xl font-bold text-white mb-4">{{ $event->title }}</h3>
-                        <div class="flex gap-6 text-white/80 text-sm">
-                            <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</span>
-                            <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> {{ $event->location }}</span>
+                    <img src="{{ Str::startsWith($event->image, 'http') ? $event->image : asset('storage/' . $event->image) }}" alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover z-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent p-10 flex flex-col justify-end z-10">
+                        <h3 class="text-2xl font-bold text-white mb-4 relative z-20 shadow-sm">{{ $event->title }}</h3>
+                        <div class="flex gap-6 text-white text-sm relative z-20">
+                            <span class="flex items-center gap-2 drop-shadow-md"><i data-lucide="calendar" class="w-4 h-4"></i> {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</span>
+                            <span class="flex items-center gap-2 drop-shadow-md"><i data-lucide="map-pin" class="w-4 h-4"></i> {{ $event->location }}</span>
                         </div>
                     </div>
                     <a href="{{ route('events.show', $event) }}" class="absolute bottom-10 right-10">
@@ -231,7 +255,7 @@
 
     <!-- Donation CTA -->
     <section class="px-6 md:px-12 py-20">
-        <div class="bg-gradient-to-r from-potads-blue to-blue-600 rounded-[3rem] p-16 text-center text-white relative overflow-hidden">
+        <div class="bg-potads-blue rounded-[3rem] p-16 text-center text-white relative overflow-hidden">
             <!-- Decorative circle -->
             <div class="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
             
