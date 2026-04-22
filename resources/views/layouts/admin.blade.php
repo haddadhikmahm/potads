@@ -47,59 +47,125 @@
         /* SweetAlert2 Premium Customization */
         .swal2-popup {
             border-radius: 2.5rem !important;
-            padding: 3rem 2rem !important;
+            padding: 4.5rem 4rem !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
+            width: 560px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
         }
         .swal2-title {
-            font-size: 1.5rem !important;
-            font-weight: 700 !important;
-            color: #0f172a !important;
-            margin-bottom: 0.5rem !important;
+            font-size: 2.25rem !important;
+            font-weight: 900 !important;
+            color: #1e293b !important;
+            margin-bottom: 1.25rem !important;
+            padding: 0 !important;
+            letter-spacing: -0.025em !important;
         }
         .swal2-html-container {
-            font-size: 0.875rem !important;
-            color: #64748b !important;
+            font-size: 1.25rem !important;
+            color: #475569 !important;
             line-height: 1.6 !important;
-            margin-bottom: 2rem !important;
+            margin: 0 0 4rem 0 !important;
+            padding: 0 !important;
         }
         .swal2-actions {
-            gap: 1rem !important;
+            margin-top: 0 !important;
             width: 100% !important;
-            justify-content: center !important;
+            gap: 1.5rem !important;
+        }
+        .swal2-confirm, .swal2-cancel {
+            margin: 0 !important;
+            height: 85px !important;
+            border-radius: 9999px !important;
+            font-weight: 800 !important;
+            font-size: 1.35rem !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .swal2-styled.swal2-confirm {
-            padding: 1rem 3rem !important;
-            border-radius: 9999px !important;
-            font-weight: 700 !important;
-            font-size: 0.875rem !important;
-            text-transform: none !important;
-        }
-        .swal2-styled.swal2-confirm.success-btn {
             background-color: #0f407a !important;
+            color: white !important;
+            flex: 1;
+            box-shadow: 0 10px 20px -5px rgba(15, 64, 122, 0.3) !important;
         }
-        .swal2-styled.swal2-confirm.delete-btn {
-            background-color: #b91c1c !important;
+        .swal2-styled.swal2-confirm.swal2-danger {
+            background-color: #c22020 !important;
+            box-shadow: 0 10px 20px -5px rgba(194, 32, 32, 0.3) !important;
         }
         .swal2-styled.swal2-cancel {
-            padding: 1rem 3rem !important;
-            border-radius: 9999px !important;
-            font-weight: 700 !important;
-            font-size: 0.875rem !important;
             background-color: #fff !important;
-            color: #64748b !important;
-            border: 1px solid #e2e8f0 !important;
+            color: #475569 !important;
+            border: 2px solid #cbd5e1 !important;
+            flex: 1;
+        }
+        .swal2-styled.swal2-confirm:hover {
+            transform: translateY(-2px) !important;
+            filter: brightness(1.1) !important;
         }
         .swal2-icon {
             border: none !important;
-            margin-bottom: 2rem !important;
+            width: 120px !important;
+            height: 120px !important;
+            margin: 0 auto 3rem auto !important;
+        }
+        .swal2-icon.swal2-success {
+            background-color: #def7ed !important;
         }
         .swal2-icon.swal2-success .swal2-success-ring {
-            border: 0.25em solid rgba(16, 185, 129, 0.2) !important;
-            background-color: #ecfdf5 !important;
+            display: none !important;
+        }
+        .swal2-icon.swal2-success .swal2-success-fix {
+            display: none !important;
+        }
+        .swal2-icon.swal2-success [class^='swal2-success-line'] {
+            background-color: #059669 !important;
+            height: 7px !important;
+            border-radius: 10px !important;
+        }
+        .swal2-icon.swal2-success [class^='swal2-success-line'][class$='tip'] {
+            width: 32px !important;
+            left: 24px !important;
+            top: 66px !important;
+        }
+        .swal2-icon.swal2-success [class^='swal2-success-line'][class$='long'] {
+            width: 58px !important;
+            right: 22px !important;
+            top: 58px !important;
         }
         .swal2-icon.swal2-warning {
             background-color: #fefce8 !important;
             color: #eab308 !important;
+        }
+        .swal2-icon.swal2-error {
+            background-color: #fef2f2 !important;
+            color: #ef4444 !important;
+            border: none !important;
+        }
+        .swal2-icon.swal2-info {
+            background-color: #f0f9ff !important;
+            color: #0ea5e9 !important;
+            border: none !important;
+        }
+        .swal2-icon.swal2-question {
+            background-color: #f5f3ff !important;
+            color: #8b5cf6 !important;
+            border: none !important;
+        }
+        .swal2-icon.swal2-warning .swal2-icon-content,
+        .swal2-icon.swal2-error .swal2-icon-content,
+        .swal2-icon.swal2-info .swal2-icon-content,
+        .swal2-icon.swal2-question .swal2-icon-content {
+            font-size: 3rem !important;
+        }
+        
+        /* Specific override for full-width buttons on non-confirm alerts */
+        .swal2-success-popup .swal2-actions,
+        .swal2-error-popup .swal2-actions,
+        .swal2-info-popup .swal2-actions {
+            flex-direction: column !important;
+        }
+        .swal2-success-popup .swal2-confirm,
+        .swal2-error-popup .swal2-confirm,
+        .swal2-info-popup .swal2-confirm {
+            width: 100% !important;
         }
     </style>
 </head>
@@ -256,28 +322,64 @@
         window.showAlert = {
             success: (message) => {
                 Swal.fire({
-                    title: 'Data Berhasil Disimpan',
-                    text: message || 'Perubahan Anda telah berhasil diperbarui ke sistem.',
-                    icon: 'success',
-                    iconColor: '#10b981',
+                    title: '',
+                    html: `
+                        <div class="flex flex-col items-center py-4">
+                            <div class="w-24 h-24 bg-[#def7ed] rounded-full flex items-center justify-center mb-10">
+                                <svg class="w-12 h-12 text-[#059669]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-3xl font-black text-[#1e293b] mb-4">Data Berhasil Disimpan</h2>
+                            <p class="text-lg text-[#64748b] leading-relaxed text-center px-4 mb-2">
+                                Perubahan Anda telah berhasil diperbarui ke sistem.
+                            </p>
+                        </div>
+                    `,
                     confirmButtonText: 'Tutup',
                     customClass: {
-                        confirmButton: 'success-btn'
+                        popup: 'swal2-success-popup',
+                        confirmButton: 'swal2-confirm'
+                    },
+                    buttonsStyling: false
+                });
+            },
+            error: (message) => {
+                Swal.fire({
+                    title: 'Terjadi Kesalahan',
+                    text: message || 'Gagal memproses data. Silakan coba lagi nanti.',
+                    icon: 'error',
+                    confirmButtonText: 'Tutup',
+                    customClass: {
+                        popup: 'swal2-error-popup',
+                        confirmButton: 'swal2-confirm'
                     },
                     buttonsStyling: false
                 });
             },
             confirmDelete: (form) => {
                 Swal.fire({
-                    title: 'Hapus Data Ini?',
-                    text: 'Apakah Anda yakin ingin menghapus data ini? Aksi ini tidak dapat dibatalkan.',
-                    icon: 'warning',
+                    title: '',
+                    html: `
+                        <div class="flex flex-col items-center py-4">
+                            <div class="w-28 h-28 bg-[#fefce8] rounded-full flex items-center justify-center mb-10">
+                                <svg class="w-14 h-14 text-[#eab308]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-[2.25rem] font-black text-[#1e293b] mb-4">Hapus Data Ini?</h2>
+                            <p class="text-[1.25rem] text-[#64748b] leading-relaxed text-center px-6 mb-2">
+                                Apakah Anda yakin ingin menghapus data ini? Aksi ini tidak dapat dibatalkan.
+                            </p>
+                        </div>
+                    `,
                     showCancelButton: true,
                     confirmButtonText: 'Ya, Hapus',
                     cancelButtonText: 'Batal',
                     customClass: {
-                        confirmButton: 'delete-btn',
-                        cancelButton: 'cancel-btn'
+                        popup: 'swal2-delete-popup',
+                        confirmButton: 'swal2-confirm swal2-danger',
+                        cancelButton: 'swal2-cancel'
                     },
                     buttonsStyling: false,
                     reverseButtons: true
